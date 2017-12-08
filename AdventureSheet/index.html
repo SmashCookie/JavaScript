@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Adventure Sheet</title>
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        text-align: center;
+        background-color: black;
+      }
+
+      .wrap {
+          width: 800px;
+          margin: auto;
+          padding: 0;
+          background-color: lightgrey;
+      }
+
+      .wrapper {
+        width: 554px;
+        margin: auto;
+        padding: 0;
+      }
+
+      #pageTitle {
+        margin: 0;
+        padding: 0;
+      }
+
+      #pageDescription {
+        margin: 0;
+        padding: 0;
+        margin-bottom: 2em;
+      }
+
+      .statbox {
+        display: inline-block;
+        border: 1px solid black;
+        width: 180px;
+      }
+
+      #btnCreatePlayer {
+        border: 1px solid black;
+        background-color: lawngreen;
+        width: 100%;
+        height: 100%;
+      }
+
+      .invWrapper {
+        display: inline-block;
+        width: 490px;
+        min-height: 300px;
+        float: left;
+      }
+
+      .txtboxWrapper {
+        display: inline-block;
+        width: 309px;
+        float: left;
+      }
+
+      .duoWrapper {
+        width: 800px;
+
+      }
+      .diceRollers {
+        width: 100%;
+      }
+
+      table {
+        width: 100%;
+        text-align: center;
+      }
+
+      .tblInvRow {
+        width: 100%;
+        border: 1px dotted black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="wrapper">
+        <h1 id="pageTitle">Adventure Sheet</h1>
+        <h6 id="pageDescription">version 0.011</h6>
+        <div class="statbox">
+          <button id="btnCreatePlayer">Create Player</button>
+        </div>
+        <div class="playerInfo">
+          <!-- Initial player stats -->
+          <div class="statbox">
+            <span id="playerSkill"></span>
+          </div>
+          <div class="statbox">
+            <span id="playerStamina"></span>
+          </div>
+          <div class="statbox">
+            <span id="playerLuck"></span>
+          </div><br>
+
+
+          <!-- Current player stats -->
+          <div class="statbox">
+          <span id="currentPlayerSkill"></span>
+            <button onclick="changePlayerStats('skillMinus')">-</button><button onclick="changePlayerStats('skillPlus')">+</button>
+          </div>
+
+          <div class="statbox">
+            <span id="currentPlayerStamina"></span>
+            <button onclick="changePlayerStats('staminaMinus')">-</button><button onclick="changePlayerStats('staminaPlus')">+</button>
+          </div>
+          <div class="statbox">
+            <span id="currentPlayerLuck"></span>
+            <button onclick="changePlayerStats('luckMinus')">-</button><button onclick="changePlayerStats('luckPlus')">+</button>
+          </div>
+          <!-- Current Player Gold -->
+          <br><span id="playerGold"></span>
+          <button id="btnPlayerGoldAdd" class="btnAdd">+</button>
+          <button id="btnPlayerGoldSubtract" class="btnSubtract">-</button><br>
+          <button id="btnEatProvisions">Eat Provisions</button><span>Your remaining provisions: <span id="remainingProvisions"></span></span>
+        </div>
+      </div>
+      <div class="duoWrapper">
+        <div class="invWrapper">
+          <div class="inventory">
+            <h3>Add item to inventory:</h3>
+            <span>Name: <input id="inputItemName" type="text"> Note: <input id="inputItemNote" type="text"> <button onclick="addItemToList()">Add</button></span>
+            <table id="tblInventory">
+              <tr class="tblInvRow"><th>Delete</th><th>Item-Name</th><th>Note</th></tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="txtboxWrapper">
+          <div class="textBox">
+            <h4>Notes:</h4>
+            <textarea name="notes" id="noteBox" cols="30" rows="10"></textarea>
+          </div>
+          <div class="monsterBoxes">
+            <h4 id="pageTitle">Add Monster Encounter:</h4>
+            <p>
+              Skill:<input type="number" min="0" max="30" id="monsterSkill">Stamina:<input type="number" min="0" max="30" id="monsterStamina"><button onclick="saveInitialMonsterStats()">Fight!</button>
+            </p>
+            <span id="initialMonsterSkill"></span><span id="initialMonsterStamina"></span><br>
+            <span id="currentMonsterSkill"></span><span id="currentMonsterStamina"></span><br>
+            <button onclick="changeCurrentMonsterStats('minus3')">---</button><button onclick="changeCurrentMonsterStats('minus2')">--</button><button onclick="changeCurrentMonsterStats('minus1')">-</button> <button onclick="changeCurrentMonsterStats('plus1')">+</button><button onclick="changeCurrentMonsterStats('plus2')">++</button><button onclick="changeCurrentMonsterStats('plus3')">+++</button>
+          </div>
+        </div>
+      </div>
+      <div class="wrapper">
+        <div class="diceRollers">
+          <table id="allDiceRollers">
+            <tr>
+              <th>Die</th>
+              <th>Nbr</th>
+              <th></th>
+              <th>+&nbsp; &nbsp;-</th>
+              <th>Modifier</th>
+              <th></th>
+              <th>Results</th>
+            </tr>
+            <tr>
+              <td>d4</td>
+              <td><input id="dice4amount" value="1" type="number" min="1" max="10" class="diceRollInputs"></td>
+              <td></td>
+              <td><input type="radio" name="d4" checked="checked" id="d4plus"><input type="radio" name="d4" id="d4minus"></td>
+              <td><input id="dice4mod" value="0" type="number" min="0" max="100" class="diceRollInputs"></td>
+              <td><button id="dice4roll" onclick="rollTheDice(4)">Roll</button></td>
+              <td><input id="dice4result" class="diceRollInputs"></td>
+            </tr>
+            <tr>
+              <td>d6</td>
+              <td><input id="dice6amount" value="1" type="number" min="1" max="10" class="diceRollInputs"></td>
+              <td></td>
+              <td><input type="radio" name="d6" checked="checked" id="d6plus"><input type="radio"  name="d6" id="d6minus"></td>
+              <td><input id="dice6mod" value="0" type="number" min="0" max="100" class="diceRollInputs"></td>
+              <td><button id="dice6roll" onclick="rollTheDice(6)">Roll</button></td>
+              <td><input id="dice6result" class="diceRollInputs"></td>
+            </tr>
+            <tr>
+              <td>d8</td>
+              <td><input id="dice8amount" value="1" type="number" min="1" max="10" class="diceRollInputs"></td>
+              <td></td>
+              <td><input type="radio"  name="d8" checked="checked" id="d8plus"><input type="radio"  name="d8" id="d8minus"></td>
+              <td><input id="dice8mod" value="0" type="number" min="0" max="100" class="diceRollInputs"></td>
+              <td><button id="dice8roll" onclick="rollTheDice(8)">Roll</button></td>
+              <td><input id="dice8result" class="diceRollInputs"></td>
+            </tr>
+            <tr>
+              <td>d10</td>
+              <td><input id="dice10amount" value="1" type="number" min="1" max="10" class="diceRollInputs"></td>
+              <td></td>
+              <td><input type="radio" name="d10" checked="checked" id="d10plus"><input type="radio"  name="d10" id="d10minus"></td>
+              <td><input id="dice10mod" value="0" type="number" min="0" max="100" class="diceRollInputs"></td>
+              <td><button id="dice10roll" onclick="rollTheDice(10)">Roll</button></td>
+              <td><input id="dice10result" class="diceRollInputs"></td>
+            </tr>
+            <tr>
+              <td>d12</td>
+              <td><input id="dice12amount" value="1" type="number" min="1" max="10" class="diceRollInputs"></td>
+              <td></td>
+              <td><input type="radio" name="d12" checked="checked" id="d12plus"><input type="radio" name="d12"></td>
+              <td><input id="dice12mod" value="0" type="number" min="0" max="100" class="diceRollInputs"></td>
+              <td><button id="dice12roll" onclick="rollTheDice(12)">Roll</button></td>
+              <td><input id="dice12result" class="diceRollInputs"></td>
+            </tr>
+            <tr>
+              <td>d20</td>
+              <td><input id="dice20amount" value="1" type="number" min="1" max="10" class="diceRollInputs"></td>
+              <td></td>
+              <td><input type="radio" name="d20" checked="checked" id="d20plus"><input type="radio" name="d20" id="d20minus"></td>
+              <td><input id="dice20mod" value="0" type="number" min="0" max="100" class="diceRollInputs"></td>
+              <td><button id="dice20roll" onclick="rollTheDice(20)">Roll</button></td>
+              <td><input id="dice20result" class="diceRollInputs"></td>
+            </tr>
+          </table>
+          <textarea rows="4" cols="55" id="dicerollLog"></textarea>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <p>Force initial stats:</p>
+      <span>Skill:<input id="manualInitialSkill">Stam:<input id="manualInitialStamina">Luck:<input id="manualInitialLuck"><button onclick="setManualInitialValues()">Force</button></span><br><br>
+    </div>
+
+    <script>
+      //Global Variables'
+      function setManualInitialValues() {
+        initialStats.skill = manualInitialSkill.value;
+        initialStats.stamina = manualInitialStamina.value;
+        initialStats.luck = manualInitialLuck.value;
+        printInitialStats();
+
+        currentPlayerSkill.innerHTML = "Current Skill: " + initialStats.skill;
+        currentPlayerStamina.innerHTML = "Current Stamina: " + initialStats.stamina;
+        currentPlayerLuck.innerHTML = "Current Luck: " + initialStats.luck;
+
+        playerStats.skill = initialStats.skill ;
+        playerStats.stamina = initialStats.stamina;
+        playerStats.luck = initialStats.luck;
+      }
+      //Objects
+      let playerStats = {
+        skill: 0,
+        stamina: 0,
+        luck: 0,
+        gold: 0,
+        provision: 10
+      }
+
+      let initialStats = {
+        skill: 0,
+        stamina: 0,
+        luck: 0
+      }
+
+      let monsterStats = {
+        skill: 0,
+        stamina: 0
+      }
+
+      let initialMonsterStats = {
+        skill: 0,
+        stamina: 0
+      }
+
+      //Buttons
+      // Creates the players initial stats
+      btnCreatePlayer.onclick = function() {
+        if (confirm("Are you sure you want to create a new player?")) {
+          playerStats.skill = (diceroll(6) + 6);
+          playerStats.stamina = (diceroll(6) + diceroll(6) + 12);
+          playerStats.luck = (diceroll(6) + 6);
+
+          //Prints the stats to the screen
+          saveInitialStats();
+          printInitialStats();
+          clearInventory();
+          updateCurrentPlayerStats();
+        }
+      }
+
+      // Add 1 gold to the player
+      btnPlayerGoldAdd.onclick = function() {
+        playerStats.gold++;
+        playerGold.innerHTML = "Gold: " + playerStats.gold;
+      }
+
+      // Subtract 1 gold from the player
+      btnPlayerGoldSubtract.onclick = function() {
+        if (playerStats.gold === 0) {
+          alert("Sadly... or peraphs luckly, you can't go in dept in this game!");
+        } else {
+          playerStats.gold--;
+          playerGold.innerHTML = "Gold: " + playerStats.gold;
+        }
+      }
+
+      //<button id="btnEatProvisions">Eat Provisions</button><span>Your remaining provisions: <span id="remainingProvisions"></span></span>
+      btnEatProvisions.onclick = function() {
+        playerStats.stamina += 4;
+        playerStats.provision--;
+        if (playerStats.provision <= 0) {
+          alert("You are out of provisions!");
+        } else if (playerStats.stamina >= initialStats.stamina) {
+          playerStats.stamina = initialStats.stamina;
+          currentPlayerStamina.innerHTML = "Current Stamina: " + playerStats.stamina;
+          remainingProvisions.innerHTML = playerStats.provision;
+          alert("You are at max Stamina");
+        } else {
+          currentPlayerStamina.innerHTML = "Current Stamina: " + playerStats.stamina;
+          remainingProvisions.innerHTML = playerStats.provision;
+        }
+      }
+
+      //Functions
+      function changePlayerStats(stat) {
+        switch (stat) {
+          case "skillMinus":
+            if (playerStats.skill <= 0) {
+              alert("Your skill stat can't go below 0.");
+            } else {
+              playerStats.skill--;
+              updateCurrentPlayerStats();
+            }
+            break;
+          case "skillPlus":
+            if (initialStats.skill <= playerStats.skill) {
+              alert("You can't exceed your initial skill stat");
+            } else {
+              playerStats.skill++;
+              updateCurrentPlayerStats();
+            }
+            break;
+
+          case "staminaMinus":
+            if (playerStats.stamina <= 1) {
+              playerStats.stamina--;
+              updateCurrentPlayerStats();
+              alert("YOU ARE DEAD");
+            } else {
+              playerStats.stamina--;
+              updateCurrentPlayerStats();
+            }
+            break;
+          case "staminaPlus":
+            if (playerStats.stamina >= initialStats.stamina) {
+              alert("You're already at full health!");
+            } else {
+              playerStats.stamina++;
+              updateCurrentPlayerStats();
+            }
+            break;
+
+          case "luckMinus":
+            if (playerStats.luck <= 0) {
+              alert("Sorry... you've run out of luck..");
+            } else {
+              playerStats.luck--;
+              updateCurrentPlayerStats();
+            }
+            break;
+          case "luckPlus":
+            if (playerStats.luck >= initialStats.luck) {
+              alert("You can't exceed your initial luck.");
+            } else {
+              playerStats.luck++;
+              updateCurrentPlayerStats();
+            }
+            break;
+          default:
+            alert("Unexpected Error");
+        }
+      }
+
+      function updateCurrentPlayerStats() {
+        currentPlayerSkill.innerHTML = "Current Skill: " + playerStats.skill;
+        currentPlayerStamina.innerHTML = "Current Stamina: " + playerStats.stamina;
+        currentPlayerLuck.innerHTML = "Current Luck: " + playerStats.luck;
+      }
+
+      function saveInitialStats() {
+        initialStats.skill = playerStats.skill;
+        initialStats.stamina = playerStats.stamina;
+        initialStats.luck = playerStats.luck;
+      }
+
+      function printInitialStats() {
+        playerSkill.innerHTML = "INITIAL SKILL: " + initialStats.skill;
+        playerStamina.innerHTML = "INITIAL STAMINA: " + initialStats.stamina;
+        playerLuck.innerHTML = "INITIAL LUCK: " + initialStats.luck;
+        playerGold.innerHTML = "Gold: " + playerStats.gold;
+      }
+
+      function clearInventory() {
+        tblInventory.innerHTML = "<tr><th>#</th><th>Item Name</th><th>Note</th></tr>";
+      }
+
+      function saveInitialMonsterStats() {
+        initialMonsterStats.skill = parseInt(monsterSkill.value);
+        initialMonsterStats.stamina = parseInt(monsterStamina.value);
+        monsterStats.skill = initialMonsterStats.skill;
+        monsterStats.stamina = initialMonsterStats.stamina;
+        printInitialMonsterStats();
+        printInitialCurrentMonsterStats();
+      }
+
+      function printInitialMonsterStats() {
+        initialMonsterSkill.innerHTML = "Initial Skill: " + initialMonsterStats.skill + "&nbsp;&nbsp;&nbsp;";
+        initialMonsterStamina.innerHTML = "Initial Stamina: " + initialMonsterStats.stamina;
+      }
+
+      function printInitialCurrentMonsterStats() {
+        currentMonsterSkill.innerHTML = "Current Skill: " + initialMonsterStats.skill + "&nbsp;&nbsp;&nbsp;";
+        currentMonsterStamina.innerHTML = "Current Stamina: " + initialMonsterStats.stamina;
+      }
+
+      function changeCurrentMonsterStats(grade) {
+        switch (grade) {
+          case "plus3":
+            monsterStats.stamina += 3;
+            updateCurrentMonsterStats();
+            break;
+          case "plus2":
+            monsterStats.stamina += 2;
+            updateCurrentMonsterStats();
+            break;
+          case "plus1":
+            monsterStats.stamina += 1;
+            updateCurrentMonsterStats();
+            break;
+          case "minus1":
+            monsterStats.stamina -= 1;
+            updateCurrentMonsterStats();
+            break;
+          case "minus2":
+            monsterStats.stamina -= 2;
+            updateCurrentMonsterStats();
+            break;
+          case "minus3":
+            monsterStats.stamina -= 3;
+            updateCurrentMonsterStats();
+            break;
+          default:
+            alert("Error: updateCurrentMonsterStats");
+        }
+      }
+
+      function updateCurrentMonsterStats() {
+        currentMonsterSkill.innerHTML = "Current Skill: " + monsterStats.skill + "&nbsp;&nbsp;&nbsp;";
+        currentMonsterStamina.innerHTML = "Current Stamina: " + monsterStats.stamina;
+      }
+
+      function addItemToList() {
+        let itemName = inputItemName.value;
+        let itemNote = inputItemNote.value;
+        //Creates a delete button for the list
+        let deleteButton = '<td><input type="button" value="X" onclick="removeItemFromlist(this)"></td>';
+        tblInventory.innerHTML += '<tr class="tblInvRow">' + deleteButton + "<td>" + itemName + "</td><td>" + itemNote + "</td></tr>";
+
+        //Clears input
+        inputItemName.value = "";
+        inputItemNote.value = "";
+      }
+
+      function removeItemFromlist(o) {
+        let itemToRemove = o.parentNode.parentNode;
+        itemToRemove.parentNode.removeChild(itemToRemove);
+      }
+
+      //Diceroller
+      function diceroll(dice) {
+        let diceNumber = 0;
+        switch (dice) {
+          case 4:
+            diceNumber = Math.floor(Math.random()*4)+1;
+            return diceNumber;
+          case 6:
+            diceNumber = Math.floor(Math.random()*6)+1;
+            return diceNumber;
+          case 8:
+            diceNumber = Math.floor(Math.random()*8)+1;
+            return diceNumber;
+          case 10:
+            diceNumber = Math.floor(Math.random()*10)+1;
+            return diceNumber;
+          case 12:
+            diceNumber = Math.floor(Math.random()*12)+1;
+            return diceNumber;
+          case 20:
+            diceNumber = Math.floor(Math.random()*20)+1;
+            return diceNumber;
+          default:
+            return "Unexpected error";
+        }
+      }
+
+      // <div id="dicerollLog"></div>
+      function rollTheDice(dicenr) {
+        // Reset dice variables
+        let dice = 0;
+        let diceThrow = 0;
+        let mod = 0;
+        let diceLog = [];
+
+        switch (dicenr) {
+          case 4:
+            mod = parseInt(dice4mod.value);
+            dice4result.value = ""; // resets the results box
+            for (var i = 0; i < dice4amount.value; i++) { // Rolls the dice based on how many dices the user decides to throw
+              diceThrow = diceroll(4);
+              dice += diceThrow;
+              diceLog.push(diceThrow); // Adds the dice throw to the current dice log
+            }
+            // Adjust the modifier value
+            if (d4plus.checked) {
+              dice4result.value = dice + mod;
+              dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " + mod(" + mod + ") = " + (dice + mod) + "&#13;&#10;";
+            } else {
+              dice4result.value = dice - mod;
+              dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " - mod(" + mod + ") = " + (dice - mod) + "&#13;&#10;";
+            }
+            break;
+
+            case 6:
+              mod = parseInt(dice6mod.value);
+              dice6result.value = ""; // resets the results box
+              for (var i = 0; i < dice6amount.value; i++) { // Rolls the dice based on how many dices the user decides to throw
+                diceThrow = diceroll(6);
+                dice += diceThrow;
+                diceLog.push(diceThrow); // Adds the dice throw to the current dice log
+              }
+              // Adjust the modifier value
+              if (d6plus.checked) {
+                dice6result.value = dice + mod;
+                dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " + mod(" + mod + ") = " + (dice + mod) + "&#13;&#10;";
+              } else {
+                dice6result.value = dice - mod;
+                dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " - mod(" + mod + ") = " + (dice - mod) + "&#13;&#10;";
+              }
+              break;
+
+              case 8:
+                mod = parseInt(dice8mod.value);
+                dice8result.value = ""; // resets the results box
+                for (var i = 0; i < dice8amount.value; i++) { // Rolls the dice based on how many dices the user decides to throw
+                  diceThrow = diceroll(8);
+                  dice += diceThrow;
+                  diceLog.push(diceThrow); // Adds the dice throw to the current dice log
+                }
+                // Adjust the modifier value
+                if (d8plus.checked) {
+                  dice8result.value = dice + mod;
+                  dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " + mod(" + mod + ") = " + (dice + mod) + "&#13;&#10;";
+                } else {
+                  dice8result.value = dice - mod;
+                  dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " - mod(" + mod + ") = " + (dice - mod) + "&#13;&#10;";
+                }
+                break;
+
+                case 10:
+                  mod = parseInt(dice10mod.value);
+                  dice10result.value = ""; // resets the results box
+                  for (var i = 0; i < dice10amount.value; i++) { // Rolls the dice based on how many dices the user decides to throw
+                    diceThrow = diceroll(10);
+                    dice += diceThrow;
+                    diceLog.push(diceThrow); // Adds the dice throw to the current dice log
+                  }
+                  // Adjust the modifier value
+                  if (d10plus.checked) {
+                    dice10result.value = dice + mod;
+                    dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " + mod(" + mod + ") = " + (dice + mod) + "&#13;&#10;";
+                  } else {
+                    dice10result.value = dice - mod;
+                    dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " - mod(" + mod + ") = " + (dice - mod) + "&#13;&#10;";
+                  }
+                  break;
+
+                  case 12:
+                    mod = parseInt(dice12mod.value);
+                    dice12result.value = ""; // resets the results box
+                    for (var i = 0; i < dice12amount.value; i++) { // Rolls the dice based on how many dices the user decides to throw
+                      diceThrow = diceroll(12);
+                      dice += diceThrow;
+                      diceLog.push(diceThrow); // Adds the dice throw to the current dice log
+                    }
+                    // Adjust the modifier value
+                    if (d12plus.checked) {
+                      dice12result.value = dice + mod;
+                      dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " + mod(" + mod + ") = " + (dice + mod) + "&#13;&#10;";
+                    } else {
+                      dice12result.value = dice - mod;
+                      dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " - mod(" + mod + ") = " + (dice - mod) + "&#13;&#10;";
+                    }
+                    break;
+
+                    case 20:
+                      mod = parseInt(dice20mod.value);
+                      dice20result.value = ""; // resets the results box
+                      for (var i = 0; i < dice20amount.value; i++) { // Rolls the dice based on how many dices the user decides to throw
+                        diceThrow = diceroll(20);
+                        dice += diceThrow;
+                        diceLog.push(diceThrow); // Adds the dice throw to the current dice log
+                      }
+                      // Adjust the modifier value
+                      if (d20plus.checked) {
+                        dice20result.value = dice + mod;
+                        dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " + mod(" + mod + ") = " + (dice + mod) + "&#13;&#10;";
+                      } else {
+                        dice20result.value = dice - mod;
+                        dicerollLog.innerHTML += "d" + dicenr + " -> &nbsp;" + diceLog + " - mod(" + mod + ") = " + (dice - mod) + "&#13;&#10;";
+                      }
+                      break;
+
+          default:
+            alert("Error : rollTheDice");
+        }
+      }
+
+      //Print initial values to the screen
+      remainingProvisions.innerHTML = playerStats.provision;
+      playerSkill.innerHTML = "INITIAL SKILL: 0";
+      playerStamina.innerHTML = "INITIAL STAMINA: 0";
+      playerLuck.innerHTML = "INITIAL LUCK: 0";
+      playerGold.innerHTML = "Gold: " + playerStats.gold;
+      currentPlayerSkill.innerHTML = "Current Skill: " + playerStats.skill;
+      currentPlayerStamina.innerHTML = "Current Stamina: " + playerStats.stamina;
+      currentPlayerLuck.innerHTML = "Current Luck: " + playerStats.luck;
+
+      //Future
+      // TODO: Create DM page
+      // TODO: Interaction betweeen DM page and Player Page
+      // TODO: Save Player Pages
+    </script>
+  </body>
+</html>
