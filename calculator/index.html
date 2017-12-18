@@ -1,31 +1,35 @@
 <!DOCTYPE html>
   <html lang="en">
+
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <meta charset="UTF-5">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Calculator</title>
+    <link rel="stylesheet" href="main.css" type="text/css">
   </head>
+
   <body>
     <div class="calculator">
 
-      <div class="calculatorScreen"><span id="calculatorResult"></span></div>
+      <div class="calculatorScreen"><input type="text" id="calculatorResult"></div>
 
       <div class="calculatorButtons">
         <div class="calculatorRow">
-          <button id="clearCalculator">AC</button><button id="changeTable">+/-</button><button id="divide">/</button>
+          <button id="clearCalculator">AC</button><button id="changeTable">+/-</button><button onclick="selectTable('divide')" id="divide">/</button>
         </div>
         <div class="calculatorRow">
-          <button id="calculator7">7</button><button id="calculator8">8</button><button id="calculator9">9</button><button id="multiply">X</button>
+          <button onclick="addNumber(7)">7</button><button onclick="addNumber(8)">8</button><button onclick="addNumber(9)">9</button><button onclick="selectTable('multiply')" id="multiply">X</button>
         </div>
         <div class="calculatorRow">
-          <button id="calculator4">4</button><button id="calculator5">5</button><button id="calculator6">6</button><button id="subtract">-</button>
+          <button onclick="addNumber(4)">4</button><button onclick="addNumber(5)">5</button><button onclick="addNumber(6)">6</button><button onclick="selectTable('subtract')" id="subtract">-</button>
         </div>
         <div class="calculatorRow">
-          <button id="calculator1">1</button><button id="calculator2">2</button><button id="calculator3">3</button><button id="addition">+</button>
+          <button onclick="addNumber(1)">1</button><button onclick="addNumber(2)">2</button><button onclick="addNumber(3)">3</button><button onclick="selectTable('addition')" id="addition">+</button>
         </div>
         <div class="calculatorRow">
-          <button id="calculator0">0</button><button id="equals">=</button>
+          <button onclick="addNumber(0)">0</button><button onclick="addNumber('.')">.</button><button id="equals">=</button>
         </div>
       </div>
 
