@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Current Date</title>
+  </head>
+  <body>
+  <p id="output"></p>
+
+    <script>
+      let date = new Date();
+      let month = date.getMonth();
+      let days = date.getDay();
+      let year = date.getFullYear();
+      let hour = date.getHours();
+      let minutes = date.getMinutes();
+      let seconds = date.getSeconds();
+      let currentDay = "";
+
+      let daysInWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+
+      function calculateDayOfWeek() {
+        for (let day = 1; day < 7; day++) {
+          if (days == day) {
+            currentDay = daysInWeek[day];
+          }
+        }
+      }
+
+      function printCurrentDate() {
+        output.innerHTML = "Today is: " + currentDay + "<br> The current time is: " + hour + ":" + minutes + ":" + seconds;
+      }
+
+      setInterval(function(){
+        calculateDayOfWeek()
+        printCurrentDate()
+      }, 1000);
+
+
+
+    </script>
+  </body>
+</html>
