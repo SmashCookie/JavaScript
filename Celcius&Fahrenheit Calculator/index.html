@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Celcius & Fahrenheit Calculator</title>
+    <style media="screen">
+      .wrap {
+        text-align: center;
+      }
+
+      input {
+        border: none;
+        border-top: 1px solid black;
+        width: 80px;
+        height: 80px;
+        text-align: center;
+        font-size: 32px;
+      }
+
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+          /* display: none; <- Crashes Chrome on hover */
+          -webkit-appearance: none;
+          margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+      }
+
+      .degreeBox {
+        display: inline-block;
+        text-align: center;
+        border: 2px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="degreeBox">
+        <p>Celcius</p>
+        <input type="number" id="celsius" class="degreeCalculator" placeholder="0" onkeyup="calculateDegree('C')">
+      </div>
+      <div class="degreeBox">
+        <p>Fahrenheit</p>
+        <input type="number" id="fahrenheit" class="degreeCalculator" placeholder="0" onkeyup="calculateDegree('F')">
+      </div>
+    </div>
+
+    <script>
+      let c = document.querySelector("#celsius");
+      let f = document.querySelector("#fahrenheit");
+
+      function calculateDegree(degree) {
+        if (degree === "C") {
+          f.value = (c.value * 2) + 30;
+        } else {
+          c.value = (f.value -32) * 5/9;
+        }
+      }
+    </script>
+  </body>
+</html>
