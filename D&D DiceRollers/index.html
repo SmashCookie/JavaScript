@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Diceroller</title>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Die</th>
+        <th>Amount</th>
+        <th>+</th>
+        <th>-</th>
+        <th>Modifier</th>
+        <th>Roll</th>
+        <th>Result</th>
+      </tr>
+      <tr>
+        <td>d4</td>
+        <td><input id="d4Amount" type="number" min="1" max="99" value="1"></td>
+        <td><input id="d4+" type="radio" name="d4+-" checked></td>
+        <td><input id="d4-" type="radio" name="d4+-"></td>
+        <td><input id="d4mod" type="number" min="0" max="99" value="0"></td>
+        <td><button onclick="rollDice(4)">Roll</button></td>
+        <td><input id="d4result" type="number" placeholder="No rolls" min="0" max="199"></td>
+      </tr>
+      <tr>
+        <td>d6</td>
+        <td><input id="d6Amount" type="number" min="1" max="99" value="1"></td>
+        <td><input id="d6+" type="radio" name="d6+-" checked></td>
+        <td><input id="d6-" type="radio" name="d6+-"></td>
+        <td><input id="d6mod" type="number" min="0" max="99" value="0"></td>
+        <td><button onclick="rollDice(6)">Roll</button></td>
+        <td><input id="d6result" type="number" placeholder="No rolls" min="0" max="199"></td>
+      </tr>
+      <tr>
+        <td>d8</td>
+        <td><input id="d8Amount" type="number" min="1" max="99" value="1"></td>
+        <td><input id="d8+" type="radio" name="d8+-" checked></td>
+        <td><input id="d8-" type="radio" name="d8+-"></td>
+        <td><input id="d8mod" type="number" min="0" max="99" value="0"></td>
+        <td><button onclick="rollDice(8)">Roll</button></td>
+        <td><input id="d8result" type="number" placeholder="No rolls" min="0" max="199"></td>
+      </tr>
+      <tr>
+        <td>d10</td>
+        <td><input id="d10Amount" type="number" min="1" max="99" value="1"></td>
+        <td><input id="d10+" type="radio" name="d10+-" checked></td>
+        <td><input id="d10-" type="radio" name="d10+-"></td>
+        <td><input id="d10mod" type="number" min="0" max="99" value="0"></td>
+        <td><button onclick="rollDice(10)">Roll</button></td>
+        <td><input id="d10result" type="number" placeholder="No rolls" min="0" max="199"></td>
+      </tr>
+      <tr>
+        <td>d12</td>
+        <td><input id="d12Amount" type="number" min="1" max="99" value="1"></td>
+        <td><input id="d12+" type="radio" name="d12+-" checked></td>
+        <td><input id="d12-" type="radio" name="d12+-"></td>
+        <td><input id="d12mod" type="number" min="0" max="99" value="0"></td>
+        <td><button onclick="rollDice(12)">Roll</button></td>
+        <td><input id="d12result" type="number" placeholder="No rolls" min="0" max="199"></td>
+      </tr>
+      <tr>
+        <td>d20</td>
+        <td><input id="d20Amount" type="number" min="1" max="99" value="1"></td>
+        <td><input id="d20+" type="radio" name="d20+-" checked></td>
+        <td><input id="d20-" type="radio" name="d20+-"></td>
+        <td><input id="d20mod" type="number" min="0" max="99" value="0"></td>
+        <td><button onclick="rollDice(20)">Roll</button></td>
+        <td><input id="d20result" type="number" placeholder="No rolls" min="0" max="199"></td>
+      </tr>
+
+    </table>
+
+
+
+    <script src="js/dice.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
